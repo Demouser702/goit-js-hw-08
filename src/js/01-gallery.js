@@ -9,6 +9,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 console.log(galleryItems);
 
 const galleryEl = document.querySelector('.gallery');
+
 galleryItems.forEach(image => {
   const galleryItemEl = document.createElement('li');
   galleryItemEl.classList.add('gallery__item');
@@ -23,27 +24,8 @@ galleryItems.forEach(image => {
   galleryEl.appendChild(galleryItemEl);
 });
 
-galleryEl.addEventListener('click', openLargeImage);
-let modalEl;
-function openLargeImage(event) {
-  event.preventDefault();
-  if (event.target.classList.contains('gallery__image')) {
-    const imageSource = event.target.dataset.source;
-    modalEl = new SimpleLightbox(
-      `<img src="${imageSource}" alt="${event.target.alt}" />`
-    );
-    modalEl.open();
-    modalEl.show();
-    window.addEventListener('keydown', closeModal);
-    document.addEventListener('click', closeModal);
-  }
-}
-
-function closeModal(e) {
-  if (modalEl && (e.key === 'Escape' || e.target === modalEl.element())) {
-    modalEl.close();
-
-    window.removeEventListener('keydown', closeModal);
-    document.removeEventListener('click', closeModal);
-  }
-}
+const galleryDealer = new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
+  captionsData: 'alt',
+});
+galleryDealer.on('show.SimpleLightbox');
